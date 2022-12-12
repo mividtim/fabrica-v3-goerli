@@ -1,50 +1,25 @@
-type ApprovalForAll @entity(immutable: true) {
-  id: Bytes!
-  account: Bytes! # address
-  operator: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type Creation @entity(immutable: true) {
-  id: Bytes!
-  uri: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TransferBatch @entity(immutable: true) {
+type Transfer @entity(immutable: true) {
   id: Bytes!
   operator: Bytes! # address
   from: Bytes! # address
   to: Bytes! # address
-  ids: [BigInt]! # uint256[]
-  values: [BigInt]! # uint256[]
+  token: Token!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type TransferSingle @entity(immutable: true) {
+type Token @entity(immutable: true) {
   id: Bytes!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  id: BigInt! # uint256
-  value: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  tokenId: BigInt!
+  totalSupply: BigInt!
+  transfers: [Transfer!] @derivedFrom(field: "token")
+  creator: User!
+  owner: User!
 }
 
-type URI @entity(immutable: true) {
+type User @entity(immutable: true) {
   id: Bytes!
-  value: String! # string
-  id: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  tokens: [Token!] @derivedFrom(field: "owner")
+  created: [Token!] @derivedFrom(field: "creator")
 }

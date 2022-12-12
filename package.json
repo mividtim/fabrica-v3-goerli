@@ -4,15 +4,17 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ mividtim/fabrica-v3-goerli",
-    "create-local": "graph create --node http://localhost:8020/ mividtim/fabrica-v3-goerli",
-    "remove-local": "graph remove --node http://localhost:8020/ mividtim/fabrica-v3-goerli",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 mividtim/fabrica-v3-goerli",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ fabrica-v3-goerli",
+    "create-local": "graph create --node http://localhost:8020/ fabrica-v3-goerli",
+    "remove-local": "graph remove --node http://localhost:8020/ fabrica-v3-goerli",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 fabrica-v3-goerli",
     "test": "graph test"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.37.0",
     "@graphprotocol/graph-ts": "0.28.1"
   },
-  "devDependencies": { "matchstick-as": "0.5.0" }
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
 }
