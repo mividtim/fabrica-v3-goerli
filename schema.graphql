@@ -1,3 +1,17 @@
+type Token @entity(immutable: false) {
+  id: Bytes!
+  tokenId: BigInt!
+  totalSupply: BigInt!
+  transfers: [Transfer!] @derivedFrom(field: "token")
+  creator: User!
+  owner: User!
+  uri: String!
+  definition: String!
+  configuration: String!
+  operatingAgreement: String!
+  validator: Bytes!
+}
+
 type Transfer @entity(immutable: true) {
   id: Bytes!
   operator: Bytes! # address
@@ -7,15 +21,6 @@ type Transfer @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}
-
-type Token @entity(immutable: true) {
-  id: Bytes!
-  tokenId: BigInt!
-  totalSupply: BigInt!
-  transfers: [Transfer!] @derivedFrom(field: "token")
-  creator: User!
-  owner: User!
 }
 
 type User @entity(immutable: true) {
