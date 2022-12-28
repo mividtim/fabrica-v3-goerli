@@ -8,6 +8,10 @@ import {
   Token as TokenContract,
   TransferBatch as TransferBatchEvent,
   TransferSingle as TransferSingleEvent,
+  UpdateConfiguration as UpdateConfigurationEvent,
+  UpdateOperatingAgreement as UpdateOperatingAgreementEvent,
+  UpdateValidator as UpdateValidatorEvent,
+  URI as UriEvent,
 } from '../generated/Token/Token'
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
@@ -82,4 +86,44 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     user = new User(event.params.to)
     user.save()
   }
+}
+
+export function handleUriChanged(event: UriEvent): void {
+  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.id))
+  const token = Token.load(tokenIdBytes)
+  if (token == null) {
+    throw new Error(`Unknown token ${tokenIdBytes}`)
+  }
+  token.uri = event.params.value
+  token.save()
+}
+
+export function handleUpdateConfiguration(event: UpdateConfigurationEvent): void {
+  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.param0))
+  const token = Token.load(tokenIdBytes)
+  if (token == null) {
+    throw new Error(`Unknown token ${tokenIdBytes}`)
+  }
+  token.configuration = event.params.newData
+  token.save()
+}
+
+export function handleUpdateOperatingAgreement(event: UpdateOperatingAgreementEvent): void {
+  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.param0))
+  const token = Token.load(tokenIdBytes)
+  if (token == null) {
+    throw new Error(`Unknown token ${tokenIdBytes}`)
+  }
+  token.operatingAgreement = event.params.newData
+  token.save()
+}
+
+export function handleUpdateValidator(event: UpdateValidatorEvent): void {
+  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.tokenId))
+  const token = Token.load(tokenIdBytes)
+  if (token == null) {
+    throw new Error(`Unknown token ${tokenIdBytes}`)
+  }
+  token.validator = event.params.validator
+  token.save()
 }
