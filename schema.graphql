@@ -3,8 +3,8 @@ type Token @entity(immutable: false) {
   tokenId: BigInt!
   totalSupply: BigInt!
   transfers: [Transfer!] @derivedFrom(field: "token")
+  balances: [Balance!] @derivedFrom(field: "token")
   creator: User!
-  owner: User!
   uri: String!
   definition: String!
   configuration: String!
@@ -12,12 +12,20 @@ type Token @entity(immutable: false) {
   validator: Bytes!
 }
 
+type Balance @entity(immutable: false) {
+  id: Bytes!
+  token: Token!
+  holder: User!
+  balance: BigInt!
+}
+
 type Transfer @entity(immutable: true) {
   id: Bytes!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
+  operator: User!
+  from: User!
+  to: User!
   token: Token!
+  value: BigInt!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -25,6 +33,6 @@ type Transfer @entity(immutable: true) {
 
 type User @entity(immutable: true) {
   id: Bytes!
-  tokens: [Token!] @derivedFrom(field: "owner")
+  tokens: [Balance!] @derivedFrom(field: "holder")
   created: [Token!] @derivedFrom(field: "creator")
 }
