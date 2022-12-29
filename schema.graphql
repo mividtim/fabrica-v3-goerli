@@ -1,7 +1,7 @@
 type Token @entity(immutable: false) {
   id: Bytes!
   tokenId: BigInt!
-  totalSupply: BigInt!
+  supply: BigInt!
   transfers: [Transfer!] @derivedFrom(field: "token")
   balances: [Balance!] @derivedFrom(field: "token")
   creator: User!
@@ -33,6 +33,7 @@ type Transfer @entity(immutable: true) {
 
 type User @entity(immutable: true) {
   id: Bytes!
+  address: Bytes!
   tokens: [Balance!] @derivedFrom(field: "holder")
   created: [Token!] @derivedFrom(field: "creator")
 }

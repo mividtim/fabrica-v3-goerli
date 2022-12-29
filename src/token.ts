@@ -32,16 +32,19 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     let operator = User.load(event.params.operator)
     if (operator == null) {
       operator = new User(event.params.operator)
+      operator.address = event.params.operator
       operator.save()
     }
     let from = User.load(event.params.from)
     if (from == null) {
       from = new User(event.params.from)
+      from.address = event.params.from
       from.save()
     }
-    let to = User.load(event.params.from)
+    let to = User.load(event.params.to)
     if (to == null) {
-      to = new User(event.params.from)
+      to = new User(event.params.to)
+      to.address = event.params.to
       to.save()
     }
     const tokenContract = TokenContract.bind(event.address)
@@ -58,7 +61,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
     token.validator = properties.getValidator()
     token.uri = tokenContract.uri(event.params.ids[i])
     if (event.params.from == Address.zero()) {
-      token.totalSupply = event.params.values[i]
+      token.supply = event.params.values[i]
     } else {
       let balance = Balance.load(event.params.from.concat(tokenIdBytes))
       if (balance == null) {
@@ -72,7 +75,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
       balance.save()
     }
     if (event.params.to == Address.zero()) {
-      token.totalSupply = token.totalSupply.minus(event.params.values[i])
+      token.supply = token.supply.minus(event.params.values[i])
     } else {
       let balance = Balance.load(event.params.to.concat(tokenIdBytes))
       if (balance == null) {
@@ -106,16 +109,19 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   let operator = User.load(event.params.operator)
   if (operator == null) {
     operator = new User(event.params.operator)
+    operator.address = event.params.operator
     operator.save()
   }
   let from = User.load(event.params.from)
   if (from == null) {
     from = new User(event.params.from)
+    from.address = event.params.from
     from.save()
   }
   let to = User.load(event.params.to)
   if (to == null) {
     to = new User(event.params.to)
+    to.address = event.params.to
     to.save()
   }
   const tokenContract = TokenContract.bind(event.address)
@@ -132,7 +138,7 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
   token.validator = properties.getValidator()
   token.uri = tokenContract.uri(event.params.id)
   if (event.params.from == Address.zero()) {
-    token.totalSupply = event.params.value
+    token.supply = event.params.value
   } else {
     let balance = Balance.load(event.params.from.concat(tokenIdBytes))
     if (balance == null) {
@@ -146,7 +152,7 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
     balance.save()
   }
   if (event.params.to == Address.zero()) {
-    token.totalSupply = token.totalSupply.minus(event.params.value)
+    token.supply = token.supply.minus(event.params.value)
   } else {
     let balance = Balance.load(event.params.to.concat(tokenIdBytes))
     if (balance == null) {
