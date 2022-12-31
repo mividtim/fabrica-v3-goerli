@@ -16,10 +16,10 @@ import {
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
   for (let i = 0 ; i < event.params.ids.length ; i++) {
-    const transfer = new Transfer(
-        event.transaction.hash.concatI32(event.logIndex.toI32())
-    )
     const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.ids[i]))
+    const transfer = new Transfer(
+        event.transaction.hash.concatI32(event.logIndex.toI32()).concatI32(i)
+    )
     transfer.operator = event.params.operator
     transfer.from = event.params.from
     transfer.to = event.params.to
@@ -93,10 +93,10 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
+  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.id))
   const transfer = new Transfer(
       event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  const tokenIdBytes = Bytes.fromByteArray(Bytes.fromBigInt(event.params.id))
   transfer.operator = event.params.operator
   transfer.from = event.params.from
   transfer.to = event.params.to
