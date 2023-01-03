@@ -15,9 +15,9 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Token
+        - Balance
+        - Transfer
         - User
-        - TransferBatch
-        - TransferSingle
       abis:
         - name: Token
           file: ./abis/Token.json
@@ -26,4 +26,12 @@ dataSources:
           handler: handleTransferBatch
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleUriChanged
+        - event: UpdateConfiguration(uint256,string)
+          handler: handleUpdateConfiguration
+        - event: UpdateOperatingAgreement(uint256,string)
+          handler: handleUpdateOperatingAgreement
+        - event: UpdateValidator(uint256,string,address)
+          handler: handleUpdateOperatingAgreement
       file: ./src/token.ts
